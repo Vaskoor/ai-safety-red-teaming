@@ -1,0 +1,78 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>AI Safety & LLM Red-Teaming Platform</title>
+<style>
+:root{--bg:#0b0f14;--p:#131a23;--p2:#1a232e;--p3:#222d3a;--bd:#24303d;--fg:#e6edf3;--dim:#8b98a5;--d2:#64707d;--g:#3fb950;--r:#f85149;--y:#d29922;--b:#58a6ff;--pu:#bc8cff;--t:#2dd4bf;--gr:linear-gradient(90deg,#f85149,#bc8cff)}
+*{box-sizing:border-box;margin:0;padding:0}body{font:14px/1.5 system-ui,sans-serif;background:var(--bg);color:var(--fg)}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-thumb{background:var(--bd);border-radius:4px}
+header{position:sticky;top:0;z-index:10;padding:14px 28px;border-bottom:1px solid var(--bd);background:linear-gradient(90deg,rgba(248,81,73,.08),rgba(188,140,255,.08)),var(--bg);display:flex;align-items:center;gap:12px}
+.logo{width:32px;height:32px;border-radius:8px;background:var(--gr);display:flex;align-items:center;justify-content:center;font-size:16px}
+header h1{font-size:16px;font-weight:700}.tag{color:var(--dim);font-size:11px;border:1px solid var(--bd);padding:2px 8px;border-radius:999px;text-transform:uppercase}
+.spacer{flex:1}.badge{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px;border:1px solid var(--bd);background:var(--p2)}.badge .dot{width:8px;height:8px;border-radius:50%;background:var(--g);animation:p 1.6s infinite}@keyframes p{0%,100%{opacity:1}50%{opacity:.4}}
+main{max-width:1300px;margin:0 auto;padding:24px 28px 80px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.card{background:var(--p);border:1px solid var(--bd);border-radius:10px;padding:16px;position:relative;overflow:hidden}.card::before{content:"";position:absolute;left:0;top:0;width:3px;height:100%;background:var(--b)}.card.g::before{background:var(--g)}.card.r::before{background:var(--r)}.card.y::before{background:var(--y)}.card.pu::before{background:var(--pu)}.card.t::before{background:var(--t)}
+.card .l{font-size:10px;text-transform:uppercase;color:var(--dim)}.card .v{font-size:24px;font-weight:800;font-variant-numeric:tabular-nums;margin-top:4px}.card .v.g{color:var(--g)}.v.r{color:var(--r)}.v.y{color:var(--y)}.v.pu{color:var(--pu)}.v.t{color:var(--t)}
+.gauge-wrap{display:flex;align-items:center;justify-content:center;padding:20px}
+.gauge{position:relative;width:120px;height:60px;overflow:hidden}
+.gauge svg{transform:rotate(-90deg)}
+.gauge .val{position:absolute;top:30px;left:0;right:0;text-align:center;font-size:28px;font-weight:800}
+.panel{background:var(--p);border:1px solid var(--bd);border-radius:10px;overflow:hidden;margin-bottom:20px}.panel h2{font-size:12px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;padding:14px 18px;border-bottom:1px solid var(--bd)}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 14px;text-align:left;border-bottom:1px solid var(--bd)}th{color:var(--dim);font-size:10px;text-transform:uppercase}td.r{text-align:right;font-variant-numeric:tabular-nums}
+.pill{padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700}.pill.high{background:rgba(248,81,73,.2);color:var(--r)}.pill.medium{background:rgba(210,153,34,.2);color:var(--y)}.pill.low{background:rgba(63,185,80,.2);color:var(--g)}
+.pill.pass{background:rgba(63,185,80,.15);color:var(--g)}.pill.block{background:rgba(248,81,73,.15);color:var(--r)}.pill.fail{background:rgba(248,81,73,.15);color:var(--r)}
+.bar{height:8px;border-radius:4px;background:var(--p3);overflow:hidden}.bar>span{display:block;height:100%}
+.code{font-family:monospace;font-size:11px;color:var(--dim)}
+.grid2{display:grid;grid-template-columns:1fr;gap:20px}@media(min-width:1000px){.grid2{grid-template-columns:1fr 1fr}}
+.arch{font-size:12px;color:var(--dim);line-height:1.9;padding:14px 18px}.arch b{color:var(--fg)}
+.agents{display:flex;flex-wrap:wrap;gap:6px;padding:14px 18px}.ag{padding:4px 10px;border-radius:999px;background:var(--p2);border:1px solid var(--bd);font-size:11px;color:var(--r)}
+footer{text-align:center;padding:28px;color:var(--d2);font-size:12px;border-top:1px solid var(--bd);margin-top:20px}
+</style></head><body>
+<header><div class="logo">🛡</div><h1>AI Safety & LLM Red-Teaming</h1><span class="tag">Adversarial · Eval · CI Gate</span><div class="spacer"></div><span class="badge"><span class="dot"></span><span id="st">live</span></span></header>
+<main>
+<div class="cards" id="cards"></div>
+<div class="grid2">
+<div>
+<div class="panel"><h2>Safety Score (CI gate threshold: 80)</h2><div class="gauge-wrap"><div class="gauge">
+<svg width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="50" stroke="#24303d" stroke-width="10" fill="none"/><circle id="gaugeArc" cx="60" cy="60" r="50" stroke="#3fb950" stroke-width="10" fill="none" stroke-linecap="round" stroke-dasharray="314" stroke-dashoffset="314"/></svg>
+<div class="val" id="gaugeVal">—</div>
+</div></div></div>
+<div class="panel"><h2>Attack Categories (red-team results)</h2><table><thead><tr><th>Category</th><th class="r">Attempts</th><th class="r">Success</th><th>Severity</th></tr></thead><tbody id="atks"></tbody></table></div>
+</div>
+<div>
+<div class="panel"><h2>RAG-Specific Tests</h2><table><thead><tr><th>Test</th><th>Score</th><th>Threshold</th><th>Status</th></tr></thead><tbody id="rag"></tbody></table></div>
+<div class="panel"><h2>Adversarial Agents</h2><div class="agents" id="agents"></div></div>
+<div class="panel"><h2>Architecture</h2><div class="arch">
+<div>🛡 <b>Adversarial agents</b> — attack the LLM app (inject, jailbreak, leak, bias, hallucinate, tool-abuse)</div>
+<div>📊 <b>Eval harness</b> — accuracy, hallucination, bias, safety scores</div>
+<div>🔍 <b>RAG tests</b> — retrieval relevance, citation accuracy, context poisoning, faithfulness</div>
+<div>🚦 <b>CI gate</b> — block deploy if safety score < threshold</div>
+<div>📝 <b>Report</b> — reproducible attacks + mitigations</div>
+<div style="margin-top:8px;color:var(--d2)">Stack: Promptfoo · DeepEval · RAGAS · LangChain · custom adversarial agents</div>
+</div></div>
+</div>
+</div></main>
+<footer>AI Safety & LLM Red-Teaming · AI QA is the hottest niche · MIT</footer>
+<script>
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]))}
+async function load(){try{
+const r=await fetch('/api/status');const d=await r.json();
+document.getElementById('st').textContent=`safety ${d.safetyScore.toFixed(0)} · CI: ${d.ciGate}`;
+document.getElementById('cards').innerHTML=[
+ c('Safety Score',d.safetyScore.toFixed(0),'g'),
+ c('Total Attacks',d.totalAttempts.toLocaleString(),'r'),
+ c('Successful',d.totalSuccess,'y'),
+ c('CI Gate',d.ciGate,d.ciGate==='pass'?'g':'r'),
+].join('');
+const arc=document.getElementById('gaugeArc');
+const pct=d.safetyScore/100;arc.style.strokeDashoffset=314-(314*pct);
+arc.setAttribute('stroke',d.safetyScore>=80?'#3fb950':'#f85149');
+document.getElementById('gaugeVal').textContent=d.safetyScore.toFixed(0);
+document.getElementById('gaugeVal').style.color=d.safetyScore>=80?'var(--g)':'var(--r)';
+document.getElementById('atks').innerHTML=d.attacks.map(a=>`<tr><td><b>${esc(a.category)}</b><div class="code">${esc(a.example)}</div></td><td class="r">${a.attempts}</td><td class="r"><span class="pill ${a.severity}">${a.success}</span></td><td><span class="pill ${a.severity}">${a.severity}</span></td></tr>`).join('');
+document.getElementById('rag').innerHTML=d.ragTests.map(t=>{const pass=t.score>=t.threshold;return `<tr><td>${esc(t.name)}</td><td><div class="bar" style="width:60px;display:inline-block"><span style="width:${t.score*100}%;background:${pass?'var(--g)':'var(--r)'}"></span></div> ${t.score.toFixed(2)}</td><td class="r">${t.threshold}</td><td><span class="pill ${pass?'pass':'fail'}">${pass?'pass':'fail'}</span></td></tr>`}).join('');
+document.getElementById('agents').innerHTML=d.adversarialAgents.map(a=>`<span class="ag">⚔ ${esc(a)}</span>`).join('');
+}catch(e){document.getElementById('st').textContent='offline'}}
+function c(l,v,col){return `<div class="card ${col}"><div class="l">${l}</div><div class="v ${col}">${v}</div></div>`}
+load();setInterval(load,3000);
+</script>
+</body></html>
